@@ -3,6 +3,8 @@ from storages.backends.s3boto3 import S3Boto3Storage
 from .settings import AWS_STORAGE_BUCKET_NAME, LOCAL_DOWNLOAD_PATH
 import boto3
 import os
+import boto3.session
+
 
 class MediaStorage(S3Boto3Storage):
     location = settings.MEDIAFILES_LOCATION
@@ -24,10 +26,23 @@ class MediaStorage(S3Boto3Storage):
         client.upload_fileobj(nf, AWS_STORAGE_BUCKET_NAME, user.username + '/' + dir + file.name)
         os.remove('tempfile')
         # putResponse = client.put_object(Bucket=AWS_STORAGE_BUCKET_NAME, Key= file_name)
-
+    """
     def download_file(file_name, dir):
         client = boto3.resource('s3')
         client.Bucket(AWS_STORAGE_BUCKET_NAME).download_file(Key= dir, Filename=LOCAL_DOWNLOAD_PATH+file_name)
+    """
+
+    def down(filename, bucketPath):
+        session = boto3.session.Session(region_name='us-west-2')
+        s3 = session.client('s3')
+        filepath = settings.LOCAL_DOWNLOAD_PATH + filename
+        response_headers = {
+            'response-content-type': 'application/force-download',
+            'response-content-disposition': 'attachment;filename="%s"' % filename
+        }
+        url = s3.generate_presigned_url('get_object', Params={'Bucket': 'fileshell-test', 'Key': bucketPath},
+                                        ExpiresIn=100)
+        return url
 
     def delete_file(file_name, dir):
         client = boto3.resource('s3')

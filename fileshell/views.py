@@ -173,11 +173,14 @@ def download(request, bucketPath, filename, dir):
 
     # 필터링 된 파일 최근 열람 시간 갱신
     File.objects.filter(title=filename, bucketPath=dir).update(last_view_TM=datetime.datetime.now())
-
+    """
     # s3에서 해당 파일을 정해진 경로로 다운로드
     MediaStorage.download_file(filename, bucketPath)
+    """
 
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+    url = MediaStorage.down(filename, bucketPath)
+
+    return HttpResponseRedirect(url)
 
 def delete(request, bucketPath, filename, dir):
 

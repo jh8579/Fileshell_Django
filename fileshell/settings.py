@@ -27,6 +27,7 @@ ALLOWED_HOSTS = [
     '13.125.219.232',
     'localhost',
     '.ap-northeast-2.compute.amazonaws.com',
+    '127.0.0.1',
 ]
 
 
@@ -138,5 +139,5 @@ SECRET_KEY = secret_key
 
 #AWS Access
 AWS_ACCESS_KEY_ID = key_id
-AWS_SECRET_ACCESS_KEY =secret_access_key
+AWS_SECRET_ACCESS_KEY = secret_access_key
 AWS_STORAGE_BUCKET_NAME ='fileshell-test'
