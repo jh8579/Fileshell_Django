@@ -1,0 +1,41 @@
+{%  load staticfiles %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <title> FileShell</title>
+    <link rel="stylesheet" href="{% static 'css/layout_base_demo.css' %}">
+</head>
+<body>
+<div class="left_bar">
+    <div class="nav">
+        <a href="../home"> <img class = 'shell_icon' src= "{% static 'resources/shell.png' %}" width="100" height="100"/></a>
+        <ul class="nav-list">
+            <li class="nav-item"><a href="../home" class="nav-link">Home</a></li>
+            <li class="nav-item"><a href="../file" class="nav-link">File</a></li>
+        </ul>
+    </div>
+
+</div>
+<div class="header">
+    <h1> FileShell</h1>
+    <a href="{% url 'logout' %}"> <img class = 'logout_icon' src= "{% static 'resources/logout.png' %}"/></a>
+    <a href="{% url 'profile' %}"> <img class = 'profile_icon' src= "{% static 'resources/profile.png' %}" /></a>
+    <input type="search" name="search" id="search" class="search_bar"  placeholder="Your search">
+</div>
+<div>
+    {% block content %}
+    {% endblock %}
+    <div class="right_bar">
+        <button class="upload-btn"><a href="../home" class="upload-link">파일 업로드</a></button>
+        <div class="nav">
+            <ul class="nav-list">
+                <li class="nav-item1"><a href="../file" class="nav-link-right">  <img class = 'add_folder_icon' src= "{% static 'resources/add_folder.png' %}" width="30" height="30"/> 새 폴더</a></li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

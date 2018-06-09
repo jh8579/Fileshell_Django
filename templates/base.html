@@ -1,0 +1,45 @@
+{%  load staticfiles %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <title> FileShell</title>
+    <link rel="stylesheet" href="{% static 'css/layout_base.css' %}">
+</head>
+<body>
+
+<div class="left_bar">
+    <a href=/> <img class = 'shell_icon' src= "{% static 'resources/shell.png' %}" width="200" height="200"/></a>
+    <div class="nav">
+        <ul class="nav-list">
+            <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
+            <li class="nav-item"><a href="/home/" class="nav-link">File</a></li>
+        </ul>
+    </div>
+
+</div>
+<div class="header">
+    <a href="{% url 'logout' %}"> <img class = 'logout_icon' src= "{% static 'resources/logout.png' %}" width="50" height="50"  align="right"/></a>
+    <a href="{% url 'profile' %}"> <img class = 'profile_icon' src= "{% static 'resources/profile.png' %}" width="50" height="50" align="right"/></a>
+    <div class="search_form">
+        <form id='search' action="" onsubmit="yourFunction()" method="post" enctype="multipart/form-data">{% csrf_token %}
+            <input type="dir_name" name="dir_name" id="dir_name" required="required" placeholder="검색할 파일이나 폴더 이름">
+            <input type = "submit">
+        </form>
+    </div>
+    <h1> FileShell</h1>
+</div>
+{% block content %}
+{% endblock %}
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript">
+    function yourFunction(){
+        var action_src = "/search/" + document.getElementsByName("dir_name")[0].value;
+        var your_form = document.getElementById('search');
+        your_form.action = action_src ;
+    }
+</script>
+</body>
+</html>

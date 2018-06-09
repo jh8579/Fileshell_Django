@@ -1,0 +1,73 @@
+{% extends 'base.html'%}
+{% load staticfiles %}
+{% block content %}
+    <div>
+        <div class="right_bar">
+            <li class="nav-item1"><a href="" class="nav-link-right">  <img class = 'add_folder_icon' src= "{% static 'resources/upload.png' %}" width="30" height="30"/> 파일 업로드</a></li>
+            <form action={% url 'upload' %} method="post" enctype="multipart/form-data" novalidate>
+                {% csrf_token %}
+
+                <input type ="file" name = "source-file">
+                <input type = "submit">
+            </form>
+            <li class="nav-item1"><a href="" class="nav-link-right">  <img class = 'add_folder_icon' src= "{% static 'resources/add_folder.png' %}" width="30" height="30"/> 새 폴더</a></li>
+            <form action="{% url 'add_folder' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+                <input type="dir_name" name="dir_name" id="dir_name" required="required" placeholder="New Folder Name">
+                <input type = "submit">
+            </form>
+        </div>
+    </div>
+    <div class="frame">
+        <!-- //header -->
+        <div class="container">
+            <!-- //nav -->
+            <div class="content">
+                <table cellspacing=1 width=700 border=1>
+                    <tr>
+                        <td width=300><p align=center>제목</p></td>
+                        <td width=350><p align=center>등록 시간</p></td>
+                        <td width=350><p align=center>최근 열람 시간</p></td>
+                        <td width=200><p align=center>즐겨찾기</p></td>
+                        <td width=200><p align=center>파일 크기</p></td>
+                        <td width=200><p align=center>파일 삭제</p></td>
+                    </tr>
+                    {% if folderList %}
+                        <ul>
+                            {% for folderRow in folderList %}
+                                <tr>
+                                    <td width=50><a href="/{{ folderRow.dir_name }}", align=center>{{ folderRow.dir_name }}</a></td>
+                                    <td width=100><p  href="", align=center>{{ folderRow.uploaded_TM }}</p></td>
+                                    <td width=100><p  href="", align=center>{{ folderRow.last_view_TM }}</p></td>
+                                    <td width=100><p  href="", align=center>{{ folderRow.isFavor }}</p></td>
+                                    <td width=100><p  href="", align=center>{{ folderRow.fileSize }}</p></td>
+                                </tr>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>No Folder.</p>
+                    {% endif %}
+                    {% if fileList %}
+                        <ul>
+                            {% for fileRow in fileList %}
+                                <tr>
+                                    <td width=50><a href="/download/{{ fileRow.bucketPath }}{{ fileRow.title }}//{{ fileRow.title }}//{{ fileRow.bucketPath }}" align=center>{{ fileRow.title }}</a></td>
+                                    <td width=100><p href="", align=center>{{ fileRow.uploaded_TM }}</p></td>
+                                    <td width=100><p  href="", align=center>{{ fileRow.last_view_TM }}</p></td>
+                                    <td width=100><a  href="/changeFavor/{{ fileRow.bucketPath }}/{{ fileRow.title }}" align=center>{{ fileRow.isFavor }}</a></td>
+                                    <td width=100><p  href="", align=center>{{ fileRow.fileSize }}</p></td>
+                                    <td width=100><a  href="/delete/{{ fileRow.bucketPath }}{{ fileRow.title }}//{{ fileRow.title }}//{{ fileRow.bucketPath }}" align=center>파일 삭제</a></td>
+                                </tr>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>No File.</p>
+                    {% endif %}
+
+                </table>
+            </div>
+        </div>
+        <!-- //container -->
+    </div>
+    <!-- //frame -->
+
+{% endblock %}
