@@ -8,9 +8,9 @@ class File(models.Model):
     isFavor = models.BooleanField(default=False)
     bucketPath = models.CharField(max_length=50)
     fileSize = models.IntegerField()
-    folder = models.ForeignKey('Folder', null=True, blank=True, related_name='datas')
+    folder = models.ForeignKey('Folder', null=True, blank=True, related_name='datas', on_delete=models.CASCADE,)
 
 class Folder(models.Model):
     dir_name = models.CharField(max_length=30)
     user = models.CharField(max_length=20, default='')
-    parent = models.ForeignKey('self', related_name='child', null=True, blank=True)
+    parent = models.ForeignKey('self', related_name='child', null=True, blank=True, on_delete=models.CASCADE)
