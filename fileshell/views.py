@@ -144,7 +144,7 @@ def upload(request):
     if request.method == 'POST':
 
         ## 파일 model 변수 초기화
-        filedata = request.FILES['source-file']
+        filedata = request.FILES.get('source-file')
         title = request.FILES.get('source-file')
         user = request.user
         user_name = request.user.username
