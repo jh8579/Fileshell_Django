@@ -9,7 +9,8 @@
 }
 .dropzone {
   position: relative;
-  border: 1px solid rgba(0,0,0,0.08);
+  border: 2px dashed #000000;
+  margin-left: 50px;
   background: rgba(0,0,0,0.02);
   padding: 1em;
 }
@@ -42,7 +43,7 @@
   display: inline-block;
   margin: 17px;
   vertical-align: top;
-  border: 1px solid #acacac;
+  border: 2px dashed #000000;
   padding: 6px 6px 6px 6px;
 }
 .dropzone .dz-preview.dz-file-preview [data-dz-thumbnail],
@@ -154,7 +155,7 @@
   display: block;
 }
 .dropzone {
-  border: 1px solid rgba(0,0,0,0.03);
+  border: 6px dashed #000000;
   min-height: 360px;
   -webkit-border-radius: 3px;
   border-radius: 3px;

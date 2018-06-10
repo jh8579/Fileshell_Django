@@ -35,7 +35,7 @@ class MediaStorage(S3Boto3Storage):
             'response-content-type': 'application/force-download',
             'response-content-disposition': 'attachment;filename="%s"' % filename
         }
-        url = s3.generate_presigned_url('get_object', Params={'Bucket': 'fileshell-test', 'Key': bucketPath},
+        url = s3.generate_presigned_url('get_object', Params={'Bucket': AWS_STORAGE_BUCKET_NAME, 'Key': bucketPath},
                                         ExpiresIn=100)
         return url
 
