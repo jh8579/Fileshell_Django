@@ -26,11 +26,6 @@ class MediaStorage(S3Boto3Storage):
         client.upload_fileobj(nf, AWS_STORAGE_BUCKET_NAME, user.username + '/' + dir + file.name)
         os.remove('tempfile')
         # putResponse = client.put_object(Bucket=AWS_STORAGE_BUCKET_NAME, Key= file_name)
-    """
-    def download_file(file_name, dir):
-        client = boto3.resource('s3')
-        client.Bucket(AWS_STORAGE_BUCKET_NAME).download_file(Key= dir, Filename=LOCAL_DOWNLOAD_PATH+file_name)
-    """
 
     def down(filename, bucketPath):
         session = boto3.session.Session(region_name='us-west-2')

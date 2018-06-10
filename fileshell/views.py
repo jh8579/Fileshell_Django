@@ -42,7 +42,6 @@ def file(request):
     type = this_path.split('/')
     type.pop(0)
     type = type.pop(0)
-    print(type)
 
     # user가 갖고 있는 폴더 중 현재 url을 parent로 갖는 폴더 필터링
     folderList = Folder.objects.filter(parent__dir_name=dir, user=request.user.username)
@@ -142,10 +141,10 @@ def add_folder(request):
 
 def upload(request):
     if request.method == 'POST':
-
+        print(request.FILES)
         ## 파일 model 변수 초기화
-        filedata = request.FILES.get('source-file')
-        title = request.FILES.get('source-file')
+        filedata = request.FILES.get('file')  # request.Files['file'] 함수 썻을 때 오류 발생할 수 있음!!
+        title = request.FILES.get('file')
         user = request.user
         user_name = request.user.username
         now = time.localtime()
@@ -163,7 +162,6 @@ def upload(request):
         MediaStorage.upload_file(filedata, user, dir)
     else:
         pass
-
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 def download(request, bucketPath, filename, dir):

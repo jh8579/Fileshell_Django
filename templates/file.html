@@ -4,10 +4,8 @@
     <div>
         <div class="right_bar">
             <li class="nav-item1"><a href="" class="nav-link-right">  <img class = 'add_folder_icon' src= "{% static 'resources/upload.png' %}" width="30" height="30"/> 파일 업로드</a></li>
-            <form action={% url 'upload' %} method="post" enctype="multipart/form-data" novalidate>
-                {% csrf_token %}
-
-                <input type ="file" name = "source-file">
+            <form action={% url 'upload' %} method="post" enctype="multipart/form-data" novalidate>{% csrf_token %}
+                <input type ="file" name = "file">
                 <input type = "submit">
             </form>
             <li class="nav-item1"><a href="" class="nav-link-right">  <img class = 'add_folder_icon' src= "{% static 'resources/add_folder.png' %}" width="30" height="30"/> 새 폴더</a></li>
@@ -63,12 +61,30 @@
                     {% else %}
                         <p>No File.</p>
                     {% endif %}
-
                 </table>
+                <form action="{% url 'upload' %}" id="dropzone" class="dropzone" method="post" enctype="multipart/form-data">{% csrf_token %}
+                    <div class="fallback">
+                        <input class="fall_back" name="source-file" type="file"/>
+                    </div>
+                </form>
             </div>
         </div>
         <!-- //container -->
     </div>
     <!-- //frame -->
+
+    <script src="{% static 'js/dropzone.js' %}"></script>
+    <script type="text/javascript">
+        Dropzone.options.dropzone = {
+            maxFilesize: 10, // Mb
+            init: function() {
+                this.on('success', function(){
+                    if (this.getQueuedFiles().length == 0 && this.getUploadingFiles().length == 0) {
+                        location.reload();
+                    }
+                });
+            }
+        };
+    </script>
 
 {% endblock %}

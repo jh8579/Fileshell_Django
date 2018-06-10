@@ -1,8 +1,17 @@
 body {
   font-family: "Roboto", sans-serif;
 }
+
 .search_form{
-   float:right;
+  float:right;
+}
+.drop{
+   width:200px;
+  height:200px;
+}
+.drop_zone{
+   width:200px;
+  height:200px;
 }
 .left_bar {
   float:left;
