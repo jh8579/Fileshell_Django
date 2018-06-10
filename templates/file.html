@@ -88,7 +88,7 @@
     <script src="{% static 'js/dropzone.js' %}"></script>
     <script type="text/javascript">
         Dropzone.options.dropzone = {
-            maxFilesize: 10, // Mb
+            maxFilesize: 100000000, // Mb
             init: function() {
                 this.on('success', function(){
                     if (this.getQueuedFiles().length == 0 && this.getUploadingFiles().length == 0) {
