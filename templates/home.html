@@ -20,21 +20,23 @@
                         <td width=100><p>파일 삭제</p></td>
                     </tr>
                     </thead>
-                    {% if favorList %}                        <tbody>
-                            {% for fileRow in favorList %}
-                                <tr>
-                                    <td width=50><a href="/download/{{ fileRow.bucketPath }}{{ fileRow.title }}//{{ fileRow.title }}//{{ fileRow.bucketPath }}" valign=center>{{ fileRow.title }}</a></td>
-                                    <td width=100><p href="", >{{ fileRow.uploaded_TM }}</p></td>
-                                    <td width=100><p  href="",>{{ fileRow.last_view_TM }}</p></td>
-                                    <td width=100><a  href="/changeFavor/{{ fileRow.bucketPath }}/{{ fileRow.title }}" align=center>{{ fileRow.isFavor }}</a></td>
-                                    <td width=100><p  href="", >{{ fileRow.fileSize }}</p></td>
-                                    <td width=100><a  href="/delete/{{ fileRow.bucketPath }}{{ fileRow.title }}//{{ fileRow.title }}//{{ fileRow.bucketPath }}" align=center>파일 삭제</a></td>
-
-                                </tr>
-                            {% endfor %}
+                    {% if favorList %}
+                        <tbody>
+                        {% for fileRow in favorList %}
+                            <tr>
+                                <td width=50><a href="/download/{{ fileRow.bucketPath }}{{ fileRow.title }}//{{ fileRow.title }}//{{ fileRow.bucketPath }}" valign=center>{{ fileRow.title }}</a></td>
+                                <td width=100><p href="", >{{ fileRow.uploaded_TM }}</p></td>
+                                <td width=100><p  href="",>{{ fileRow.last_view_TM }}</p></td>
+                                {% if fileRow.isFavor%}
+                                    <td width=100><a  href="/changeFavor/{{ fileRow.bucketPath }}/{{ fileRow.title }}" align=center><img class = 'star_icon' src= "{% static 'resources/color_star.png' %}" width="50" height="50"/></a></td>
+                                {% else %}
+                                    <td width=100><a  href="/changeFavor/{{ fileRow.bucketPath }}/{{ fileRow.title }}" align=center><img class = 'star_icon' src= "{% static 'resources/gray_star.png' %}" width="50" height="50"/></a></td>
+                                {% endif %}
+                                <td width=100><p  href="", >{{ fileRow.fileSize }}</p></td>
+                                <td width=100><a  href="/delete/{{ fileRow.bucketPath }}{{ fileRow.title }}//{{ fileRow.title }}//{{ fileRow.bucketPath }}" align=center><img class = 'trash_icon' src= "{% static 'resources/trashcan.png' %}" width="50" height="50"/></a></td>
+                            </tr>
+                        {% endfor %}
                         </tbody>
-                    {% else %}
-                        <p>No File.</p>
                     {% endif %}
                 </table>
                 <div class = "shiftleft">
@@ -53,25 +55,40 @@
                     </thead>
                     {% if recentList %}
                         <tbody>
-                            {% for fileRow in recentList %}
-                                <tr>
-                                    <td width=50><a href="/download/{{ fileRow.bucketPath }}{{ fileRow.title }}//{{ fileRow.title }}//{{ fileRow.bucketPath }}" align=center>{{ fileRow.title }}</a></td>
-                                    <td width=100><p href="", >{{ fileRow.uploaded_TM }}</p></td>
-                                    <td width=100><p  href="", >{{ fileRow.last_view_TM }}</p></td>
-                                    <td width=100><a  href="/changeFavor/{{ fileRow.bucketPath }}/{{ fileRow.title }}" align=center>{{ fileRow.isFavor }}</a></td>
-                                    <td width=100><p  href="",>{{ fileRow.fileSize }}</p></td>
-                                    <td width=100><a  href="/delete/{{ fileRow.bucketPath }}{{ fileRow.title }}//{{ fileRow.title }}//{{ fileRow.bucketPath }}" align=center>파일 삭제</a></td>
-
-                                </tr>
-                            {% endfor %}
+                        {% for fileRow in recentList %}
+                            <tr>
+                                <td width=50><a href="/download/{{ fileRow.bucketPath }}{{ fileRow.title }}//{{ fileRow.title }}//{{ fileRow.bucketPath }}" align=center>{{ fileRow.title }}</a></td>
+                                <td width=100><p href="", >{{ fileRow.uploaded_TM }}</p></td>
+                                <td width=100><p  href="" >{{ fileRow.last_view_TM }}</p></td>
+                                {% if fileRow.isFavor%}
+                                    <td width=100><a  href="/changeFavor/{{ fileRow.bucketPath }}/{{ fileRow.title }}" align=center><img class = 'star_icon' src= "{% static 'resources/color_star.png' %}" width="50" height="50"/></a></td>
+                                {% else %}
+                                    <td width=100><a  href="/changeFavor/{{ fileRow.bucketPath }}/{{ fileRow.title }}" align=center><img class = 'star_icon' src= "{% static 'resources/gray_star.png' %}" width="50" height="50"/></a></td>
+                                {% endif %}
+                                <td width=100><p  href="">{{ fileRow.fileSize }}</p></td>
+                                <td width=100><a  href="/delete/{{ fileRow.bucketPath }}{{ fileRow.title }}//{{ fileRow.title }}//{{ fileRow.bucketPath }}" align=center><img class = 'trash_icon' src= "{% static 'resources/trashcan.png' %}" width="50" height="50"/></a></td>
+                            </tr>
+                        {% endfor %}
                         </tbody>
-                    {% else %}
-                        <p>No File.</p>
                     {% endif %}
                 </table>
             </div>
         </div>
         <!-- //container -->
     </div>
+
+    <script src="{% static 'js/dropzone.js' %}"></script>
+    <script type="text/javascript">
+        Dropzone.options.dropzone = {
+            maxFilesize: 10, // Mb
+            init: function() {
+                this.on('success', function(){
+                    if (this.getQueuedFiles().length == 0 && this.getUploadingFiles().length == 0) {
+                        location.reload();
+                    }
+                });
+            }
+        };
+    </script>
     <!-- //frame -->
 {% endblock %}

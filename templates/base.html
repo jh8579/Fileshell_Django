@@ -22,9 +22,6 @@
 </div>
 <div class="header">
     <a href="{% url 'logout' %}"> <img class = 'logout_icon' src= "{% static 'resources/logout.png' %}" width="50" height="50"  align="right"/></a>
-    <!--
-    <a href="{% url 'profile' %}"> <img class = 'profile_icon' src= "{% static 'resources/profile.png' %}" width="50" height="50" align="right"/></a>
-    -->
     <div class="search_form">
         <form id='search' action="" onsubmit="yourFunction()" method="post" enctype="multipart/form-data" >{% csrf_token %}
             <input type="dir_name" name="dir_name" id="dir_name" required="required" placeholder="검색할 파일이나 폴더 이름">

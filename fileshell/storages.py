@@ -16,15 +16,15 @@ class MediaStorage(S3Boto3Storage):
     def upload_file(file, user, dir):
         client = boto3.client('s3')
         data = file
-        f = open('tempfile', 'wb')
+        f = open(file.name, 'wb')
         for chunk in data.chunks():
             f.write(chunk)
         f.close()
 
-        nf = open('tempfile', 'rb')
+        nf = open(file.name, 'rb')
         # client.Bucket(AWS_STORAGE_BUCKET_NAME).put_object(Key=file_name, body= nf)
         client.upload_fileobj(nf, AWS_STORAGE_BUCKET_NAME, user.username + '/' + dir + file.name)
-        os.remove('tempfile')
+        os.remove(file.name)
         # putResponse = client.put_object(Bucket=AWS_STORAGE_BUCKET_NAME, Key= file_name)
 
     def down(filename, bucketPath):

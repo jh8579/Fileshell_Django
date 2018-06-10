@@ -21,7 +21,7 @@
         <div class="container">
             <!-- //nav -->
             <div class="content">
-                <table id="hor-minimalist-b" width = 1000px>
+                <table id="hor-minimalist-b" width = 100%>
                     <thead>
                     <tr>
                         <th scope="col", >제목</th>
@@ -54,28 +54,27 @@
                             </tr>
                         {% endfor %}
                         </tbody>
-                    {% else %}
-                        <p>No Folder.</p>
                     {% endif %}
                     {% if fileList %}
                         <tbody>
-                            {% for fileRow in fileList %}
-                                <tr>
-                                    <td><a href="/download/{{ fileRow.bucketPath }}{{ fileRow.title }}//{{ fileRow.title }}//{{ fileRow.bucketPath }}" align=center>{{ fileRow.title }}</a></td>
-                                    <td><p href="", >{{ fileRow.uploaded_TM }}</p></td>
-                                    <td><p  href="", >{{ fileRow.last_view_TM }}</p></td>
-                                    <td><a  href="/changeFavor/{{ fileRow.bucketPath }}/{{ fileRow.title }}" style="text-align:center;">{{ fileRow.isFavor }}</a></td>
-                                    <td><p  href="", >{{ fileRow.fileSize }}</p></td>
-                                    <td><a  href="/delete/{{ fileRow.bucketPath }}{{ fileRow.title }}//{{ fileRow.title }}//{{ fileRow.bucketPath }}" align=center>파일 삭제</a></td>
-
-                                </tr>
-                            {% endfor %}
+                        {% for fileRow in fileList %}
+                            <tr>
+                                <td><a href="/download/{{ fileRow.bucketPath }}{{ fileRow.title }}//{{ fileRow.title }}//{{ fileRow.bucketPath }}" align=center>{{ fileRow.title }}</a></td>
+                                <td><p href="", >{{ fileRow.uploaded_TM }}</p></td>
+                                <td><p  href="", >{{ fileRow.last_view_TM }}</p></td>
+                                {% if fileRow.isFavor%}
+                                    <td width=100><a  href="/changeFavor/{{ fileRow.bucketPath }}/{{ fileRow.title }}" align=center><img class = 'star_icon' src= "{% static 'resources/color_star.png' %}" width="50" height="50"/></a></td>
+                                {% else %}
+                                    <td width=100><a  href="/changeFavor/{{ fileRow.bucketPath }}/{{ fileRow.title }}" align=center><img class = 'star_icon' src= "{% static 'resources/gray_star.png' %}" width="50" height="50"/></a></td>
+                                {% endif %}
+                                <td><p  href="", >{{ fileRow.fileSize }}</p></td>
+                                <td><a  href="/delete/{{ fileRow.bucketPath }}{{ fileRow.title }}//{{ fileRow.title }}//{{ fileRow.bucketPath }}" align=center><img class = 'trash_icon' src= "{% static 'resources/trashcan.png' %}" width="50" height="50"/></a></td>
+                            </tr>
+                        {% endfor %}
                         </tbody>
-                    {% else %}
-                        <p>No File.</p>
                     {% endif %}
                 </table>
-                <form action="{% url 'upload' %}" id="dropzone" class="dropzone" method="post" enctype="multipart/form-data" >{% csrf_token %}
+                <form action="{% url 'upload' %}" id="dropzone" class="dropzone" method="post" enctype="multipart/form-data"  multi>{% csrf_token %}
                     <div class="fallback">
                         <input class="fall_back" name="source-file" type="file"/>
                     </div>
@@ -92,6 +91,11 @@
             maxFilesize: 10, // Mb
             init: function() {
                 this.on('success', function(){
+                    if (this.getQueuedFiles().length == 0 && this.getUploadingFiles().length == 0) {
+                        location.reload();
+                    }
+                });
+                this.on('completemulti', function(){
                     if (this.getQueuedFiles().length == 0 && this.getUploadingFiles().length == 0) {
                         location.reload();
                     }
