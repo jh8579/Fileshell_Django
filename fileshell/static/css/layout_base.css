@@ -1,5 +1,6 @@
 body {
   font-family: "Roboto", sans-serif;
+  height :2000px
 }
 ::placeholder{
   color : #FFFFFF;
@@ -74,7 +75,7 @@ body {
 .left_bar {
   float:left;
   width:200px;
-  height:1500px;
+  height:100%;
   background-color: #2b2d3d;
 }
 .nav {
