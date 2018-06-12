@@ -18,7 +18,7 @@ def home(request):
 
         # user가 갖고 있는 파일 중 일주일 안에 다운로드 된 파일 필터링
         endTime = datetime.datetime.now()
-        startTime = endTime - datetime.timedelta(days=3)  # 최근 날짜 기준 (현재: 3일)
+        startTime = endTime - datetime.timedelta(days=1)  # 최근 날짜 기준 (현재: 3일)
         recentList = File.objects.filter(last_view_TM__range=[startTime, endTime], user=request.user.username)
 
         return render(request, 'home.html', {'favorList': favorList, 'recentList': recentList})
