@@ -50,7 +50,7 @@
                                 <td><p  href="", >{{ folderRow.last_view_TM }}</p></td>
                                 <td ><p  href="",>{{ folderRow.isFavor }}</p></td>
                                 <td ><p  href="",>{{ folderRow.fileSize }}</p></td>
-                                <td ><p  href="",></p></td>
+                                <td ><a  href="/delete_folder/{{ folderRow.dir_name }}"><img class = 'trash_icon' src= "{% static 'resources/trashcan.png' %}" width="50" height="50"/></a></td>
                             </tr>
                         {% endfor %}
                         </tbody>
@@ -88,7 +88,7 @@
     <script src="{% static 'js/dropzone.js' %}"></script>
     <script type="text/javascript">
         Dropzone.options.dropzone = {
-            maxFilesize: 100000000, // Mb
+            maxFilesize: 1024, // Mb
             init: function() {
                 this.on('success', function(){
                     if (this.getQueuedFiles().length == 0 && this.getUploadingFiles().length == 0) {

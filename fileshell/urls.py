@@ -29,6 +29,7 @@ urlpatterns = [
 
     url(r'^download/(?P<bucketPath>.+)//(?P<filename>.+)//(?P<dir>.+)$', views.download, name='download'),  ## 다운로드 기능
     url(r'^delete/(?P<bucketPath>.+)//(?P<filename>.+)//(?P<dir>.+)$', views.delete, name='delete'),  ## 삭제 기능
+    url(r'^delete_folder/(?P<foldername>.+)$', views.delete_folder, name='delete_folder'),
     url(r'^changeFavor/(?P<bucketPath>.+)/(?P<filename>.+)$', views.changeFavor, name='changeFavor'),  ## 즐겨찾기 on/off 기능
     url('add_folder/', views.add_folder, name='add_folder'),  ## 폴더 추가 기능
     url('signup/', views.signup, name='signup'),  ## 회원가입 기능

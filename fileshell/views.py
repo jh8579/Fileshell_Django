@@ -10,7 +10,6 @@ import datetime
 
 
 def home(request):
-
     # user가 로그인 되어 있을 때
     if request.user.is_authenticated:
         # user가 갖고 있는 파일 중 즐겨찾기 True인 파일 필터링
@@ -18,7 +17,7 @@ def home(request):
 
         # user가 갖고 있는 파일 중 일주일 안에 다운로드 된 파일 필터링
         endTime = datetime.datetime.now()
-        startTime = endTime - datetime.timedelta(days=1)  # 최근 날짜 기준 (현재: 3일)
+        startTime = endTime - datetime.timedelta(days=1)  # 최근 날짜 기준 (현재: 1일)
         recentList = File.objects.filter(last_view_TM__range=[startTime, endTime], user=request.user.username)
 
         return render(request, 'home.html', {'favorList': favorList, 'recentList': recentList})
@@ -26,15 +25,14 @@ def home(request):
     else:
         return render(request, 'login.html')
 
-def file(request):
 
+def file(request):
     # user가 로그인 되어 있을 때
     if request.user.is_authenticated:
         pass
     # user가 로그인 되어 있지 않을때 home으로 이동(로그인 화면 출력)
     else:
         return redirect('/')
-
 
     this_path = request.path
     dir = this_path[1:]
@@ -50,15 +48,14 @@ def file(request):
 
     return render(request, 'file.html', {'folderList': folderList, 'fileList': fileList})
 
-def search(request, search_name):
 
+def search(request, search_name):
     # user가 로그인 되어 있을 때
     if request.user.is_authenticated:
         pass
     # user가 로그인 되어 있지 않을때 home으로 이동(로그인 화면 출력)
     else:
         return redirect('/')
-
 
     this_path = request.path
     dir = this_path[1:]
@@ -67,7 +64,6 @@ def search(request, search_name):
     type.pop(0)
     type = type.pop(0)
     print(type)
-
 
     name = request
     print(name)
@@ -78,18 +74,18 @@ def search(request, search_name):
 
     return render(request, 'search.html', {'folderList': folderList, 'fileList': fileList})
 
-def profile(request):
 
+def profile(request):
     # 유저 정보 출력
     return render(request, 'profile.html')
 
-def account_login(request):
 
+def account_login(request):
     # 로그인 화면 출력
     return render(request, 'login.html')
 
-def signup(request):
 
+def signup(request):
     # requst가 POST일 때
     if request.method == "POST":
         # user 폼 지정
@@ -120,11 +116,10 @@ def signup(request):
             # home 화면으로 이동(로그인 화면)
             return redirect('/')
 
-def add_folder(request):
 
+def add_folder(request):
     # requst가 POST일 때
     if request.method == 'POST':
-
         ## 파일 model 변수 초기화
         user = request.user.username
         dir_name = request.POST.get('dir_name')
@@ -133,11 +128,12 @@ def add_folder(request):
         parent = Folder.objects.get(dir_name=dir, user=user)
 
         # 로컬 DB에 저장
-        Folder.objects.create(dir_name=dir+dir_name+'/', parent=parent, user=user)
+        Folder.objects.create(dir_name=dir + dir_name + '/', parent=parent, user=user)
         # s3 main bucket에 dir/ 디렉토리에 dir_name/ 디렉토리 생성
-        MediaStorage.create_dir(user + '/' +dir + dir_name)
+        MediaStorage.create_dir(user + '/' + dir + dir_name)
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
 
 def upload(request):
     if request.method == 'POST':
@@ -156,7 +152,7 @@ def upload(request):
         folder = Folder.objects.get(dir_name=dir, user=request.user.username)
 
         # 로컬 DB에 저장
-        File.objects.create(title=title, user=user, isFavor=False, bucketPath=user_name+'/'+dir,
+        File.objects.create(title=title, user=user, isFavor=False, bucketPath=user_name + '/' + dir,
                             fileSize=filesize, folder=folder)
         # s3 버킷에 저장
         MediaStorage.upload_file(filedata, user, dir)
@@ -164,8 +160,8 @@ def upload(request):
         pass
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
-def download(request, bucketPath, filename, dir):
 
+def download(request, bucketPath, filename, dir):
     # 경로와 이름이 같은 파일을 필터링
     #### 같은 이름을 가진 파일에 경우 겹칠 수 있음 ####
 
@@ -180,8 +176,8 @@ def download(request, bucketPath, filename, dir):
 
     return HttpResponseRedirect(url)
 
-def delete(request, bucketPath, filename, dir):
 
+def delete(request, bucketPath, filename, dir):
     # 경로와 이름이 같은 파일을 필터링
     #### 같은 이름을 가진 파일에 경우 겹칠 수 있음 ####
 
@@ -189,12 +185,12 @@ def delete(request, bucketPath, filename, dir):
     File.objects.filter(title=filename, bucketPath=dir).delete()
 
     # s3에서 해당 파일을 정해진 경로로 삭제
-    MediaStorage.delete_file(filename, bucketPath)
+    MediaStorage.delete_file(bucketPath)
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
-def changeFavor(request, bucketPath, filename):
 
+def changeFavor(request, bucketPath, filename):
     # 경로와 이름이 같은 파일을 필터링
     #### 같은 이름을 가진 파일에 경우 겹칠 수 있음 ####
 
@@ -206,15 +202,38 @@ def changeFavor(request, bucketPath, filename):
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
+
+def delete_ff(foldername, username):
+    if Folder.objects.filter(parent__dir_name=foldername, user=username).exists():  # 자식 폴더가 존재할 경우
+        folderList = Folder.objects.filter(parent__dir_name=foldername, user=username).all()
+        for i in folderList:
+            delete_ff(i.dir_name, username)  # 자식 폴더 삭제
+
+    if File.objects.filter(folder__dir_name=foldername, user=username).exists():   # 해당 폴더에 파일이 존재하는 경우
+        File.objects.filter(folder__dir_name=foldername, user=username).delete()
+
+    Folder.objects.filter(dir_name=foldername, user=username).delete()             # 해당 폴더 삭제
+    return
+
+
+def delete_folder(request, foldername):
+    username = request.user.username
+    dir = username + '/' + foldername
+
+    delete_ff(foldername, username)  # 로컬 DB에서 폴더 삭제
+    MediaStorage.delete_folder(dir)  # s3에서 폴더 삭제
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
 # url 원하는 형식으로 바꿔주기 위함
 def url_convert(url):
     url = str(url)
     temp = url.split('/')
-    temp.pop(0);temp.pop(0);temp.pop(0)
+    temp.pop(0);
+    temp.pop(0);
+    temp.pop(0)
     dir = ''
     for i in temp:
         dir += i + '/'
     dir = dir[:-1]
     return dir
-
-

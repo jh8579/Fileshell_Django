@@ -39,7 +39,11 @@ class MediaStorage(S3Boto3Storage):
                                         ExpiresIn=100)
         return url
 
-    def delete_file(file_name, dir):
+    def delete_file(dir):
+        client = boto3.resource('s3')
+        client.Bucket(AWS_STORAGE_BUCKET_NAME).objects.filter(Prefix=dir).delete()
+
+    def delete_folder(dir):
         client = boto3.resource('s3')
         client.Bucket(AWS_STORAGE_BUCKET_NAME).objects.filter(Prefix=dir).delete()
 
