@@ -140,4 +140,4 @@ SECRET_KEY = secret_key
 #AWS Access
 AWS_ACCESS_KEY_ID = key_id
 AWS_SECRET_ACCESS_KEY = secret_access_key
-AWS_STORAGE_BUCKET_NAME ='fileshell-test-jincy'
+AWS_STORAGE_BUCKET_NAME ='fileshell-test'
