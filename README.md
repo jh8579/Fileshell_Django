@@ -5,6 +5,6 @@ Cloud Computing Project
 ## DropBox와 유사한 페이지 만들기!
 ----------------
 시작하기!
-Install packages!
 
+Install packages!
 pip install -r requirements.txt
