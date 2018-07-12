@@ -1,7 +1,7 @@
-#Cloud Computing Project 
+Cloud Computing Project 
 ==============
-# Project Title : FileShell
-## Using Django and AWS EC2 and S3 develop a web service that works like a DropBox
+### Project Title : FileShell
+### Using Django and AWS EC2 and S3 develop a web service that works like a DropBox
 ----------------
 # 프로젝트 주요 기능
 > 자신의 계정에 파일을 업로드/다운로드하는 웹 서비스를 구현하는 것이다.
